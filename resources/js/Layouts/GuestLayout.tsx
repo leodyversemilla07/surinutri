@@ -4,18 +4,20 @@ import { PropsWithChildren } from 'react';
 
 export default function Guest({ children }: PropsWithChildren) {
     return (
-        <div className="min-h-screen flex flex-col md:flex-row bg-green-50">
+        <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-gray-50 via-emerald-50/80 to-teal-50">
             {/* Left side - Decorative */}
-            <div className="md:w-1/2 bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 p-8 flex flex-col justify-between relative overflow-hidden">
-                <div className="relative z-10">
-                    <Link href="/" className="inline-block">
-                        <ApplicationLogo className="w-20 h-20 fill-current text-white" />
+            <div className="md:w-1/2 bg-gradient-to-br from-emerald-700 via-emerald-800 to-teal-900 p-12 flex flex-col justify-between relative overflow-hidden">
+                <div className="relative z-10 animate-fade-in">
+                    <Link href="/" className="inline-block transform hover:scale-105 transition-transform">
+                        <ApplicationLogo className="w-24 h-24 fill-current text-white" />
                     </Link>
                 </div>
-                <div className="relative z-10 hidden md:block text-white">
-                    <h1 className="text-4xl font-bold mb-4">SuriNutri</h1>
-                    <p className="text-xl mb-8">Empowering child nutrition monitoring and tracking</p>
-                    <div className="space-y-4">
+                <div className="relative z-10 hidden md:block text-white space-y-8">
+                    <h1 className="text-5xl font-bold mb-6 animate-fade-in-up">SuriNutri</h1>
+                    <p className="text-2xl mb-12 text-gray-100 animate-fade-in-up delay-200">
+                        Empowering child nutrition monitoring and tracking
+                    </p>
+                    <div className="space-y-6">
                         <div className="flex items-center space-x-3">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-green-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -36,7 +38,7 @@ export default function Guest({ children }: PropsWithChildren) {
                         </div>
                     </div>
                 </div>
-                <div className="relative z-10 hidden md:flex space-x-4">
+                <div className="relative z-10 hidden md:flex space-x-6">
                     <a href="#" className="text-green-100 hover:text-white transition-colors">
                         Terms of Service
                     </a>
@@ -44,15 +46,17 @@ export default function Guest({ children }: PropsWithChildren) {
                         Privacy Policy
                     </a>
                 </div>
-                {/* Decorative circles */}
-                <div className="absolute top-0 left-0 w-72 h-72 bg-white opacity-10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-                <div className="absolute bottom-0 right-0 w-96 h-96 bg-white opacity-10 rounded-full translate-x-1/3 translate-y-1/3"></div>
+
+                {/* Enhanced decorative elements with better contrast */}
+                <div className="absolute top-0 right-0 -mt-16 -mr-16 w-64 h-64 bg-emerald-600/20 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 -mb-16 -ml-16 w-96 h-96 bg-teal-600/20 rounded-full blur-3xl"></div>
+                <div className="absolute top-1/3 left-1/2 w-64 h-64 bg-emerald-700/20 rounded-full blur-2xl"></div>
             </div>
 
             {/* Right side - Content */}
             <div className="md:w-1/2 p-8 flex items-center justify-center">
                 <div className="w-full max-w-md">
-                    <div className="bg-white shadow-xl rounded-lg p-8">
+                    <div className="backdrop-blur-xl bg-white shadow-[0_8px_40px_rgba(0,0,0,0.08)] rounded-2xl p-8 border border-gray-200">
                         {children}
                     </div>
                 </div>
