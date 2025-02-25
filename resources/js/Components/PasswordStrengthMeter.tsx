@@ -1,58 +1,110 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface PasswordStrengthMeterProps {
     password: string;
 }
 
-export default function PasswordStrengthMeter({ password }: PasswordStrengthMeterProps) {
-    const [strength, setStrength] = useState(0);
-    const [message, setMessage] = useState('');
+const PasswordStrengthMeter: React.FC<PasswordStrengthMeterProps> = ({ password }) => {
+    const [strength, setStrength] = useState<number>(0);
+    const [label, setLabel] = useState<string>('');
 
     useEffect(() => {
         calculateStrength(password);
     }, [password]);
 
-    const calculateStrength = (password: string) => {
-        let score = 0;
-        if (password.length >= 8) score++;
-        if (/[A-Z]/.test(password)) score++;
-        if (/[a-z]/.test(password)) score++;
-        if (/[0-9]/.test(password)) score++;
-        if (/[^A-Za-z0-9]/.test(password)) score++;
+    const calculateStrength = (password: string): void => {
+        let calculatedStrength = 0;
 
-        setStrength(score);
-        setMessage(getStrengthMessage(score));
+        if (password.length === 0) {
+            setStrength(0);
+            setLabel('');
+            return;
+        }
+
+        // Length check
+        if (password.length >= 8) calculatedStrength += 1;
+        if (password.length >= 12) calculatedStrength += 1;
+
+        // Character variety checks
+        if (/[A-Z]/.test(password)) calculatedStrength += 1;
+        if (/[a-z]/.test(password)) calculatedStrength += 1;
+        if (/[0-9]/.test(password)) calculatedStrength += 1;
+        if (/[^A-Za-z0-9]/.test(password)) calculatedStrength += 1;
+
+        // Normalize to a 0-4 scale
+        calculatedStrength = Math.min(Math.floor(calculatedStrength / 1.5), 4);
+
+        setStrength(calculatedStrength);
+
+        // Set descriptive label
+        switch (calculatedStrength) {
+            case 0:
+                setLabel('Too Weak');
+                break;
+            case 1:
+                setLabel('Weak');
+                break;
+            case 2:
+                setLabel('Fair');
+                break;
+            case 3:
+                setLabel('Good');
+                break;
+            case 4:
+                setLabel('Strong');
+                break;
+            default:
+                setLabel('');
+        }
     };
 
-    const getStrengthMessage = (score: number) => {
-        if (score === 0) return 'Very weak';
-        if (score === 1) return 'Weak';
-        if (score === 2) return 'Fair';
-        if (score === 3) return 'Good';
-        if (score === 4) return 'Strong';
-        return 'Very strong';
+    const getColor = (): string => {
+        switch (strength) {
+            case 0:
+                return 'bg-red-500';
+            case 1:
+                return 'bg-orange-500';
+            case 2:
+                return 'bg-yellow-500';
+            case 3:
+                return 'bg-emerald-500';
+            case 4:
+                return 'bg-green-600';
+            default:
+                return 'bg-gray-200';
+        }
     };
 
-    const getColor = () => {
-        if (strength <= 1) return ['bg-red-500', 'text-red-700', 'bg-red-100'];
-        if (strength === 2) return ['bg-yellow-500', 'text-yellow-700', 'bg-yellow-50'];
-        if (strength === 3) return ['bg-emerald-500', 'text-emerald-700', 'bg-emerald-50'];
-        return ['bg-teal-500', 'text-teal-700', 'bg-teal-50'];
+    const getLabelColor = (): string => {
+        switch (strength) {
+            case 0:
+                return 'text-red-500';
+            case 1:
+                return 'text-orange-500';
+            case 2:
+                return 'text-yellow-500';
+            case 3:
+                return 'text-emerald-500';
+            case 4:
+                return 'text-green-600';
+            default:
+                return 'text-gray-200';
+        }
     };
-
-    const [barColor, textColor, bgColor] = getColor();
 
     return (
         <div className="mt-2">
-            <div className={`h-2 w-full ${bgColor} rounded-full overflow-hidden`}>
+            <div className={`h-2 w-full ${getColor()} rounded-full overflow-hidden`}>
                 <div
-                    className={`h-full rounded-full transition-all duration-500 ${barColor}`}
-                    style={{ width: `${(strength / 5) * 100}%` }}
+                    className={`h-full rounded-full transition-all duration-500 ${getColor()}`}
+                    style={{ width: `${(strength / 4) * 100}%` }}
                 />
             </div>
-            <p className={`text-xs mt-1.5 font-medium ${textColor}`}>
-                {message}
+            <p className={`text-xs mt-1.5 font-medium ${getLabelColor()}`}>
+                {label}
             </p>
         </div>
     );
-}
+};
+
+export default PasswordStrengthMeter;

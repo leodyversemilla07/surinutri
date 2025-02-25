@@ -1,28 +1,50 @@
+import { useState, useEffect } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import { PageProps } from '@/types';
-import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 export default function Welcome({ auth }: PageProps) {
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+    const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        setIsVisible(true);
+
+        const handleScroll = () => {
+            const elements = document.querySelectorAll('.scroll-animate');
+            elements.forEach(element => {
+                const position = element.getBoundingClientRect();
+                if (position.top < window.innerHeight - 100) {
+                    element.classList.add('animated');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        handleScroll();
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     return (
         <>
             <Head title="Welcome to SuriNuti" />
             <div className="bg-[#f2f2f2] text-[#205a4f] min-h-screen">
-                <header className="bg-white shadow-sm sticky top-0 z-10">
+                <header className="bg-white shadow-md sticky top-0 z-10 transition-all duration-300">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
                         <div className="flex items-center">
-                            <img src="/images/logo.png" alt="SuriNuti logo" className="h-10 w-auto mr-3" />
-                            <span className="text-xl font-bold text-[#205a4f]">SuriNuti</span>
+                            <img src="/images/logo.png" alt="SuriNuti logo" className="h-12 w-auto mr-3 hover:scale-105 transition-transform duration-300" />
+                            <span className="text-2xl font-bold text-[#205a4f] tracking-tight">SuriNuti</span>
                         </div>
-                        <nav className="hidden md:flex space-x-4">
-                            <a href="#features" className="px-3 py-2 rounded-md text-sm font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white transition duration-150 ease-in-out">Features</a>
-                            <a href="#testimonials" className="px-3 py-2 rounded-md text-sm font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white transition duration-150 ease-in-out">Testimonials</a>
-                            <a href="#faq" className="px-3 py-2 rounded-md text-sm font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white transition duration-150 ease-in-out">FAQ</a>
+                        <nav className="hidden md:flex space-x-6">
+                            <a href="#features" className="px-3 py-2 rounded-md text-sm font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white transition duration-300 ease-in-out">Features</a>
+                            <a href="#testimonials" className="px-3 py-2 rounded-md text-sm font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white transition duration-300 ease-in-out">Testimonials</a>
+                            <a href="#faq" className="px-3 py-2 rounded-md text-sm font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white transition duration-300 ease-in-out">FAQ</a>
                             {auth.user ? (
                                 <Link
                                     href={route('dashboard')}
-                                    className="px-3 py-2 rounded-md text-sm font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white transition duration-150 ease-in-out"
+                                    className="px-4 py-2 rounded-md text-sm font-medium bg-[#205a4f] text-white hover:bg-[#205a4f]/90 transition duration-300 ease-in-out"
                                 >
                                     Dashboard
                                 </Link>
@@ -30,13 +52,13 @@ export default function Welcome({ auth }: PageProps) {
                                 <>
                                     <Link
                                         href={route('login')}
-                                        className="px-3 py-2 rounded-md text-sm font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white transition duration-150 ease-in-out"
+                                        className="px-3 py-2 rounded-md text-sm font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white transition duration-300 ease-in-out"
                                     >
                                         Log in
                                     </Link>
                                     <Link
                                         href={route('register')}
-                                        className="px-3 py-2 rounded-md text-sm font-medium bg-[#205a4f] text-white hover:bg-[#205a4f]/90 transition duration-150 ease-in-out"
+                                        className="px-4 py-2 rounded-md text-sm font-medium bg-[#205a4f] text-white hover:bg-[#205a4f]/90 transition duration-300 ease-in-out"
                                     >
                                         Register
                                     </Link>
@@ -51,13 +73,13 @@ export default function Welcome({ auth }: PageProps) {
                     </div>
                     <div id="mobile-menu" className="hidden md:hidden">
                         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                            <a href="#features" className="block px-3 py-2 rounded-md text-base font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white">Features</a>
-                            <a href="#testimonials" className="block px-3 py-2 rounded-md text-base font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white">Testimonials</a>
-                            <a href="#faq" className="block px-3 py-2 rounded-md text-base font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white">FAQ</a>
+                            <a href="#features" className="block px-3 py-2 rounded-md text-base font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white transition duration-300">Features</a>
+                            <a href="#testimonials" className="block px-3 py-2 rounded-md text-base font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white transition duration-300">Testimonials</a>
+                            <a href="#faq" className="block px-3 py-2 rounded-md text-base font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white transition duration-300">FAQ</a>
                             {auth.user ? (
                                 <Link
                                     href={route('dashboard')}
-                                    className="block px-3 py-2 rounded-md text-base font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white"
+                                    className="block px-3 py-2 rounded-md text-base font-medium bg-[#205a4f] text-white mt-2"
                                 >
                                     Dashboard
                                 </Link>
@@ -71,7 +93,7 @@ export default function Welcome({ auth }: PageProps) {
                                     </Link>
                                     <Link
                                         href={route('register')}
-                                        className="block px-3 py-2 rounded-md text-base font-medium text-[#205a4f] hover:bg-[#bcb429] hover:text-white"
+                                        className="block px-3 py-2 rounded-md text-base font-medium bg-[#205a4f] text-white mt-2"
                                     >
                                         Register
                                     </Link>
@@ -82,108 +104,170 @@ export default function Welcome({ auth }: PageProps) {
                 </header>
 
                 <main>
-                    <section className="py-20 bg-gradient-to-b from-white to-[#f2f2f2]">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center">
-                            <div className="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
-                                <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#205a4f] mb-6">
-                                    Nurturing Future Generations
-                                </h1>
-                                <p className="text-xl md:text-2xl text-[#7c8488] mb-10 max-w-3xl">
-                                    SuriNuti empowers healthcare professionals to monitor and improve the nutritional status of children aged 0-59 months.
-                                </p>
-                                <div className="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
-                                    <Link
-                                        href={route('register')}
-                                        className="px-6 py-3 rounded-md text-lg font-semibold bg-[#205a4f] text-white hover:bg-[#205a4f]/90 transition duration-150 ease-in-out shadow-lg"
-                                    >
-                                        Get Started
-                                    </Link>
-                                    <button
-                                        onClick={() => setIsVideoModalOpen(true)}
-                                        className="px-6 py-3 rounded-md text-lg font-semibold text-[#205a4f] border-2 border-[#205a4f] hover:bg-[#205a4f] hover:text-white transition duration-150 ease-in-out flex items-center justify-center"
-                                    >
-                                        <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
-                                        </svg>
-                                        Watch Demo
-                                    </button>
+                    <section className="py-24 bg-gradient-to-b from-white to-[#f2f2f2]">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <motion.div
+                                className="flex flex-col md:flex-row items-center"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
+                                transition={{ duration: 0.8 }}
+                            >
+                                <div className="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
+                                    <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#205a4f] mb-6 leading-tight">
+                                        Nurturing <span className="text-[#bcb429]">Future</span> Generations
+                                    </h1>
+                                    <p className="text-xl md:text-2xl text-[#7c8488] mb-10 max-w-3xl leading-relaxed">
+                                        SuriNuti empowers healthcare professionals to monitor and improve the nutritional status of children aged 0-59 months.
+                                    </p>
+                                    <div className="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+                                        <Link
+                                            href={route('register')}
+                                            className="px-8 py-4 rounded-lg text-lg font-semibold bg-[#205a4f] text-white hover:bg-[#205a4f]/90 transition duration-300 ease-in-out shadow-lg inline-block"
+                                        >
+                                            Get Started
+                                        </Link>
+                                        <button
+                                            onClick={() => setIsVideoModalOpen(true)}
+                                            className="px-8 py-4 rounded-lg text-lg font-semibold bg-white text-[#205a4f] border-2 border-[#205a4f] hover:bg-[#f2f2f2] transition duration-300 ease-in-out shadow-lg inline-flex items-center"
+                                        >
+                                            <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"></path>
+                                            </svg>
+                                            Watch Demo
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="md:w-1/2">
-                                <img src="/images/hero-image.webp" alt="Child nutrition monitoring" className="rounded-lg shadow-xl" />
-                            </div>
+                                <div className="md:w-1/2">
+                                    <motion.img
+                                        src="/images/hero-image.webp"
+                                        alt="Child nutrition monitoring"
+                                        className="rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300"
+                                        initial={{ scale: 0.9, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        transition={{ duration: 0.5, delay: 0.2 }}
+                                        whileHover={{ scale: 1.03 }}
+                                    />
+                                </div>
+                            </motion.div>
                         </div>
                     </section>
 
-                    <section id="features" className="py-20">
+                    <section id="features" className="py-20 scroll-animate">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <h2 className="text-3xl font-bold text-[#205a4f] text-center mb-12">
-                                Comprehensive Child Nutrition Monitoring
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div className="text-center mb-16">
+                                <h2 className="text-3xl sm:text-4xl font-bold text-[#205a4f] mb-4">
+                                    Comprehensive Child Nutrition Monitoring
+                                </h2>
+                                <div className="w-20 h-1 bg-[#bcb429] mx-auto mb-4"></div>
+                                <p className="text-xl text-[#7c8488] max-w-3xl mx-auto">
+                                    Our platform offers a complete suite of tools to track and analyze child growth and nutrition.
+                                </p>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                                 {[
                                     {
                                         title: "Accurate Measurements",
-                                        description: "Record and track precise growth measurements for comprehensive monitoring.",
+                                        description: "Record and track precise growth measurements for comprehensive monitoring with our smart tracking system.",
                                         icon: (
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z" />
+                                            <svg className="w-12 h-12 text-[#bcb429]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                             </svg>
                                         )
                                     },
                                     {
                                         title: "Trend Analysis",
-                                        description: "Visualize growth trends and identify potential nutritional issues early.",
+                                        description: "Visualize growth trends and identify potential nutritional issues early with intelligent data analytics.",
                                         icon: (
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
+                                            <svg className="w-12 h-12 text-[#bcb429]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
                                             </svg>
                                         )
                                     },
                                     {
                                         title: "Personalized Insights",
-                                        description: "Receive tailored recommendations based on each child's unique growth pattern.",
+                                        description: "Receive tailored recommendations based on each child's unique growth pattern and nutritional needs.",
                                         icon: (
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                                            <svg className="w-12 h-12 text-[#bcb429]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                                             </svg>
                                         )
                                     }
                                 ].map((feature, index) => (
-                                    <div key={index} className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
-                                        <div className="bg-[#bcb429] rounded-full p-3 mb-4">
+                                    <motion.div
+                                        key={index}
+                                        className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 border-t-4 border-[#bcb429]"
+                                        whileHover={{ y: -10 }}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                                    >
+                                        <div className="bg-[#f2f2f2] rounded-full w-20 h-20 flex items-center justify-center mb-6 mx-auto">
                                             {feature.icon}
                                         </div>
-                                        <h3 className="text-xl font-semibold text-[#205a4f] mb-2">{feature.title}</h3>
-                                        <p className="text-[#7c8488]">{feature.description}</p>
-                                    </div>
+                                        <h3 className="text-xl font-bold text-[#205a4f] mb-4 text-center">{feature.title}</h3>
+                                        <p className="text-[#7c8488] text-center">{feature.description}</p>
+                                    </motion.div>
                                 ))}
                             </div>
                         </div>
                     </section>
 
-                    <section className="py-20 bg-[#205a4f] text-white">
+                    <section className="py-20 bg-[#205a4f] text-white scroll-animate">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <h2 className="text-3xl font-bold text-center mb-12">Why Choose SuriNuti?</h2>
+                            <div className="text-center mb-16">
+                                <h2 className="text-3xl sm:text-4xl font-bold mb-4">Why Choose SuriNuti?</h2>
+                                <div className="w-20 h-1 bg-[#bcb429] mx-auto mb-4"></div>
+                            </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                                 {[
-                                    { title: "Easy to Use", description: "Intuitive interface designed for healthcare professionals" },
-                                    { title: "Data Security", description: "Data Privacy Act-compliant, ensuring patient data protection" },
-                                    { title: "Real-time Updates", description: "Instant access to the latest nutritional data" },
-                                    { title: "Comprehensive Reports", description: "Generate detailed reports for better decision-making" }
+                                    {
+                                        title: "Easy to Use",
+                                        description: "Intuitive interface designed for healthcare professionals",
+                                        icon: <svg className="w-10 h-10 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
+                                    },
+                                    {
+                                        title: "Data Security",
+                                        description: "Data Privacy Act-compliant, ensuring patient data protection",
+                                        icon: <svg className="w-10 h-10 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                                    },
+                                    {
+                                        title: "Real-time Updates",
+                                        description: "Instant access to the latest nutritional data",
+                                        icon: <svg className="w-10 h-10 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    },
+                                    {
+                                        title: "Comprehensive Reports",
+                                        description: "Generate detailed reports for better decision-making",
+                                        icon: <svg className="w-10 h-10 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                    }
                                 ].map((item, index) => (
-                                    <div key={index} className="bg-[#205a4f] border border-[#bcb429] rounded-lg p-6 hover:bg-[#1a4940] transition-colors duration-300">
+                                    <motion.div
+                                        key={index}
+                                        className="bg-[#1d4f45] p-6 rounded-lg text-center hover:bg-[#164039] transition-all duration-300"
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                                    >
+                                        <div className="text-[#bcb429] flex justify-center">
+                                            {item.icon}
+                                        </div>
                                         <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                                        <p className="text-[#f2f2f2]">{item.description}</p>
-                                    </div>
+                                        <p className="text-gray-300">{item.description}</p>
+                                    </motion.div>
                                 ))}
                             </div>
                         </div>
                     </section>
 
-                    <section id="testimonials" className="py-20 bg-white">
+                    <section id="testimonials" className="py-20 bg-white scroll-animate">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <h2 className="text-3xl font-bold text-[#205a4f] text-center mb-12">What Our Users Say</h2>
+                            <div className="text-center mb-16">
+                                <h2 className="text-3xl sm:text-4xl font-bold text-[#205a4f] mb-4">What Our Users Say</h2>
+                                <div className="w-20 h-1 bg-[#bcb429] mx-auto mb-4"></div>
+                                <p className="text-xl text-[#7c8488] max-w-3xl mx-auto">
+                                    Hear from healthcare professionals who have transformed their practice with SuriNuti.
+                                </p>
+                            </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {[
                                     {
@@ -205,25 +289,44 @@ export default function Welcome({ auth }: PageProps) {
                                         image: "/images/nutritionist.webp"
                                     }
                                 ].map((testimonial, index) => (
-                                    <div key={index} className="bg-[#f2f2f2] rounded-lg p-6 shadow-md hover:shadow-xl transition-shadow duration-300">
-                                        <div className="flex items-center mb-4">
-                                            <img src={testimonial.image} alt={testimonial.name} className="w-12 h-12 rounded-full mr-4" />
-                                            <div>
-                                                <h3 className="font-semibold text-[#205a4f]">{testimonial.name}</h3>
-                                                <p className="text-sm text-[#7c8488]">{testimonial.role}</p>
-                                            </div>
+                                    <motion.div
+                                        key={index}
+                                        className="bg-[#f8f8f8] p-8 rounded-xl shadow-lg relative"
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                                    >
+                                        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2">
+                                            <img
+                                                src={testimonial.image}
+                                                alt={testimonial.name}
+                                                className="w-20 h-20 rounded-full border-4 border-white shadow-lg object-cover"
+                                            />
                                         </div>
-                                        <p className="text-[#205a4f] italic">"{testimonial.quote}"</p>
-                                    </div>
+                                        <div className="pt-12 text-center">
+                                            <svg className="w-10 h-10 text-[#bcb429]/30 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                                            </svg>
+                                            <p className="italic text-[#7c8488] mb-6">{testimonial.quote}</p>
+                                            <h3 className="text-xl font-bold text-[#205a4f]">{testimonial.name}</h3>
+                                            <p className="text-[#bcb429]">{testimonial.role}</p>
+                                        </div>
+                                    </motion.div>
                                 ))}
                             </div>
                         </div>
                     </section>
 
-                    <section id="faq" className="py-20">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <h2 className="text-3xl font-bold text-[#205a4f] text-center mb-12">Frequently Asked Questions</h2>
-                            <div className="space-y-8">
+                    <section id="faq" className="py-20 bg-[#f2f2f2] scroll-animate">
+                        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="text-center mb-16">
+                                <h2 className="text-3xl sm:text-4xl font-bold text-[#205a4f] mb-4">Frequently Asked Questions</h2>
+                                <div className="w-20 h-1 bg-[#bcb429] mx-auto mb-4"></div>
+                                <p className="text-xl text-[#7c8488]">
+                                    Find answers to common questions about SuriNuti.
+                                </p>
+                            </div>
+                            <div className="space-y-6">
                                 {[
                                     {
                                         question: "How does SuriNuti ensure data privacy?",
@@ -242,27 +345,56 @@ export default function Welcome({ auth }: PageProps) {
                                         answer: "We release updates on a monthly basis, incorporating user feedback and the latest nutritional research to continually improve our platform."
                                     }
                                 ].map((faq, index) => (
-                                    <div key={index} className="bg-white rounded-lg shadow-md p-6">
-                                        <h3 className="text-xl font-semibold text-[#205a4f] mb-2">{faq.question}</h3>
-                                        <p className="text-[#7c8488]">{faq.answer}</p>
-                                    </div>
+                                    <motion.div
+                                        key={index}
+                                        className="bg-white rounded-xl shadow-md overflow-hidden"
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                                    >
+                                        <button
+                                            className="w-full px-6 py-5 text-left flex justify-between items-center focus:outline-none"
+                                            onClick={() => setActiveAccordion(activeAccordion === index ? null : index)}
+                                        >
+                                            <span className="text-lg font-medium text-[#205a4f]">{faq.question}</span>
+                                            <svg
+                                                className={`w-5 h-5 text-[#bcb429] transition-transform duration-300 ${activeAccordion === index ? 'transform rotate-180' : ''}`}
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </button>
+                                        <div
+                                            className={`px-6 pt-0 overflow-hidden transition-all duration-300 ${activeAccordion === index ? 'max-h-96 pb-6' : 'max-h-0'}`}
+                                        >
+                                            <p className="text-[#7c8488]">{faq.answer}</p>
+                                        </div>
+                                    </motion.div>
                                 ))}
                             </div>
                         </div>
                     </section>
 
-                    <section className="py-20 bg-[#bcb429]">
+                    <section className="py-20 bg-[#bcb429] scroll-animate">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                            <h2 className="text-3xl font-bold text-[#205a4f] mb-6">Ready to Get Started?</h2>
-                            <p className="text-xl text-[#205a4f] mb-10 max-w-2xl mx-auto">
-                                Join healthcare professionals worldwide in improving child nutrition with SuriNuti.
-                            </p>
-                            <Link
-                                href={route('register')}
-                                className="px-8 py-4 rounded-md text-lg font-semibold bg-[#205a4f] text-white hover:bg-[#205a4f]/90 transition duration-150 ease-in-out shadow-lg inline-block"
+                            <motion.div
+                                initial={{ scale: 0.9, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{ duration: 0.5 }}
                             >
-                                Sign Up Now
-                            </Link>
+                                <h2 className="text-3xl sm:text-4xl font-bold text-[#205a4f] mb-6">Ready to Get Started?</h2>
+                                <p className="text-xl text-[#205a4f] mb-10 max-w-2xl mx-auto">
+                                    Join healthcare professionals worldwide in improving child nutrition with SuriNuti.
+                                </p>
+                                <Link
+                                    href={route('register')}
+                                    className="px-8 py-4 rounded-lg text-lg font-semibold bg-[#205a4f] text-white hover:bg-[#205a4f]/90 transition duration-300 ease-in-out shadow-lg inline-block"
+                                >
+                                    Sign Up Now
+                                </Link>
+                            </motion.div>
                         </div>
                     </section>
                 </main>
